@@ -2,8 +2,10 @@
 
 Choose your teammate.
 
-The first public illustrated collection: 20 character profiles, sourced cricket tributes, ODI/T20 art studies, sticker and reaction downloads, and a 20-second film.
+101 original character profiles, 99 illustrated portraits and 25 reviewed desktop pet downloads. The collection includes sourced cricket tributes, ODI/T20 art studies, six animated shorts, stickers and a 20-second film. Availability is shown on each character card.
 
-[Visit the gallery](https://maadhavkothari.github.io/cricket-kennel/) · [Press materials](https://maadhavkothari.github.io/cricket-kennel/press.html) · [Credits](CREDITS.md)
+[Visit the collection](https://maadhavkothari.github.io/cricket-kennel/) · [Press kit](https://maadhavkothari.github.io/cricket-kennel/press.html) · [Credits](CREDITS.md)
 
-Original fictional dog characters developed by Maadhav Kothari with AI-assisted artwork and human art direction. No player or team endorsement is implied. Native desktop-pet production remains separate from this illustrated release.
+by Maadhav Kothari · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) · [Licence details](LICENSE.md)
+
+Original fictional dogs with AI-assisted artwork and human art direction. No athlete or team endorsement is implied. A character portrait or standalone short does not imply a completed desktop pet.
