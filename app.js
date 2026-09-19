@@ -80,7 +80,7 @@
     $('#character-format-link').onclick = () => { if (available[0]) { $('#format-select').value = profileKey(available[0]); renderFormat(); } $('#character-dialog').close(); };
     $('#character-download-link').onclick = () => $('#character-dialog').close();
     $('#character-art-download').hidden=!pet.portrait;$('#character-art-download').href=safe(pet.portrait); $('#character-art-download').download=pet.id+'.webp';
-    $('#character-availability').textContent=pet.native?'Animated pet available · Test whites':pet.portrait?'Character artwork available. A downloadable pet animation is not available yet.':'Character profile available. Portrait and pet animation are not available yet.';
+    $('#character-availability').textContent=pet.native?`Animated pet available · ${pet.native.label || 'Test whites'}`:pet.portrait?'Character artwork available. A downloadable pet animation is not available yet.':'Character profile available. Portrait and pet animation are not available yet.';
     $('#character-pet-link').hidden=!pet.native;
     $('#character-pet-link').onclick=()=>{ $('#native-pet').value=pet.id; loadNative(); $('#character-dialog').close(); };
     $('#character-dialog').showModal();
