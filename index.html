@@ -17,9 +17,9 @@
   <meta name="author" content="Maadhav Kothari">
   <title>Cricket Kennel — AI companions for ChatGPT &amp; Codex</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20260919-v1-47">
-  <script src="public-data.js?v=20260919-v1-47" defer></script>
-  <script src="app.js?v=20260919-v1-47" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260919-v1-47-skills-b600faf798">
+  <script src="public-data.js?v=20260919-v1-47-skills-b600faf798" defer></script>
+  <script src="app.js?v=20260919-v1-47-skills-b600faf798" defer></script>
 </head>
 <body id="top">
   <a class="skip" href="#team">Meet the team</a>
@@ -50,6 +50,15 @@
       </div>
       <details class="sticker-instructions" id="pet-install"><summary><span>Install in ChatGPT desktop or Codex</span><span aria-hidden="true">＋</span></summary><div><ol><li><strong>Unzip your teammate.</strong> Keep the named pet folder and its files together.</li><li><strong>Add it to your pet folder.</strong> Copy that folder into <code>~/.codex/pets/</code>. Back up an existing folder with the same name before replacing it.</li><li><strong>Choose your companion.</strong> In ChatGPT desktop, open Settings → Pets → Refresh and select the dog. In an interactive Codex terminal, type <code>/pets</code>.</li></ol><p>Use a supported desktop app or image-capable terminal. ChatGPT web has a separate upload format; these downloads are desktop/CLI packages. <a href="https://learn.chatgpt.com/docs/pets" target="_blank" rel="noopener noreferrer">Official setup and availability guide ↗</a></p></div></details>
     </section>
+
+    <!-- cricket-task-skill:start -->
+    <section class="share-gifs wrap" id="cricket-tasks" aria-labelledby="cricket-tasks-title">
+      <div class="section-heading"><div><p class="eyebrow">An optional playbook for Codex</p><h2 id="cricket-tasks-title">Cricket calls.<br>Concrete work.</h2></div><p>Turn a cricket move into a useful task.<br>All 42 Law recipes, with a local scorekeeper for verified work.</p></div>
+      <p>Ask your teammate to bowl an over of up to six useful items, catch defects in a review, or show the scorecard. The playbook works through Codex requests and keeps your score locally between invocations.</p>
+      <p><a class="button primary" href="downloads/cricket-kennel-codex-skill.zip" download>Download the Codex task skill ↓</a></p>
+      <details class="sticker-instructions"><summary><span>Install the task playbook</span><span aria-hidden="true">＋</span></summary><div><ol><li><strong>Unzip the skill.</strong> Keep the <code>brian-cricket</code> folder and its files together.</li><li><strong>Add it to Codex.</strong> Copy the folder into <code>$CODEX_HOME/skills</code>, or <code>~/.codex/skills</code> if CODEX_HOME is unset. Preserve an existing version before replacing it.</li><li><strong>Make a cricket call.</strong> Use <code>$brian-cricket</code> in your next Codex turn. Reopen Codex if needed. The included README covers first-use scoring; Node.js is required.</li></ol><p><code>$brian-cricket bowl an over on this project</code></p><p><code>$brian-cricket Law 33: review this change</code></p><p>Pet appearance and the task skill are separate installations. This optional Codex skill does not control pet frames, monitor other chats or install a ChatGPT task integration. The download contains no personal score or history.</p></div></details>
+    </section>
+    <!-- cricket-task-skill:end -->
 
     <section class="team-section wrap" id="team" aria-labelledby="team-title"><div class="section-heading"><div><p class="eyebrow">Good company at the crease</p><h2 id="team-title">There’s a dog<br> for your kind of cricket.</h2></div><p>Every created character stays in the kennel.<br>  Choose a portrait to discover their story and availability.</p></div><div class="team-tools"><label class="search"><span class="sr-only">Search characters</span><span aria-hidden="true">⌕</span><input id="pet-search" type="search" placeholder="Find a name, breed or cricket hero…"></label><span class="result-count" id="result-count" aria-live="polite"></span></div><div class="collection-filters" role="group" aria-label="Choose a collection"><button type="button" data-collection="all" aria-pressed="true">All characters</button><button type="button" data-collection="featured" aria-pressed="false">Featured collection</button><button type="button" data-collection="native" aria-pressed="false">Downloadable pets</button><button type="button" data-collection="women" aria-pressed="false">Women’s cricket</button><button type="button" data-collection="commentary" aria-pressed="false">The commentary box</button></div><div class="nation-filters" id="nation-filters" role="group" aria-label="Filter characters by nation"></div><div class="team-grid" id="team-grid"></div><p class="collection-note">Browse every character profile, with reviewed artwork as it arrives. Downloadable pets have an exact-animation preview; availability is shown on each card.</p></section>
 

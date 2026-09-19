@@ -11,3 +11,5 @@ by Maadhav Kothari · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/
 Original fictional dogs with AI-assisted artwork and human art direction. No athlete or team endorsement is implied. A character portrait or standalone short does not imply a completed desktop pet.
 
 Install the named pet folder under ~/.codex/pets/. In ChatGPT desktop, open Settings → Pets → Refresh; in Codex CLI, use /pets. These are desktop/CLI packages. [Official pet guide](https://learn.chatgpt.com/docs/pets).
+
+Optional Codex task playbook: [download the skill](downloads/cricket-kennel-codex-skill.zip) for cricket task calls, all 42 Law recipes and a local scorekeeper. Unzip and copy brian-cricket into $CODEX_HOME/skills (default ~/.codex/skills), preserving any existing version. Use $brian-cricket in your next Codex turn; reopen Codex if needed. Node.js is required for scoring. See the included README for setup. Skill installation is separate from pet appearance; the skill does not control pet frames or monitor other chats.
