@@ -34,3 +34,7 @@
 #native-demo:disabled{opacity:.5;cursor:default}#pet-install{margin-top:26px}
 @media(max-width:850px){.demo-and-film{grid-template-columns:1fr;gap:24px}.film-demo-panel .film-player video{max-height:490px}}
 @media(max-width:500px){.demo-panel-heading,.pet-demo-panel .store-controls,.film-demo-controls{padding-left:20px;padding-right:20px}.demo-selects{grid-template-columns:1fr;gap:0}.demo-panel-heading h3{font-size:29px}.demo-product-copy{font-size:21px}}
+/* Transparent gallery portraits share a foreground height and baseline. */
+.pet-image.has-portrait-layout{aspect-ratio:1}
+.pet-image.has-portrait-layout>img{position:absolute;aspect-ratio:auto;max-width:none;padding:0;mix-blend-mode:normal}
+.pet-card:hover .pet-image.has-portrait-layout>img{transform:none}

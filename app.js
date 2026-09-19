@@ -47,7 +47,13 @@
     if (!results.length) { grid.append(make('p','empty',pets.length ? 'No teammates match that search. Try a different name, breed or nation.' : 'The first illustrated teammates will appear here as the collection arrives.')); return; }
     for (const pet of results) {
       const card = make('button','pet-card'); card.type = 'button'; card.setAttribute('aria-label',`Meet ${name(pet)}, ${pet.breed}`);
-      const picture = make('div','pet-image'); const img = pet.portrait?make('img'):make('span','portrait-pending','Portrait in progress'); if(pet.portrait){img.src = safe(pet.portrait); img.alt = `${name(pet)}, ${pet.breed}`; img.width = 640; img.height = 640; img.loading = 'lazy';}
+      const picture = make('div','pet-image'); const img = pet.portrait?make('img'):make('span','portrait-pending','Portrait in progress'); if(pet.portrait){img.src = safe(pet.portrait); img.alt = `${name(pet)}, ${pet.breed}`; img.width = 640; img.height = 640; img.loading = 'lazy';
+        const layout = pet.portrait_layout;
+        if (layout && ['width','height','left','top'].every(key => Number.isFinite(layout[key])) && layout.width > 0 && layout.height > 0) {
+          picture.classList.add('has-portrait-layout');
+          for (const key of ['width','height','left','top']) img.style[key] = `${layout[key]}%`;
+        }
+      }
       add(picture,img,make('span','pet-number',`CK / ${String(pets.indexOf(pet) + 1).padStart(2,'0')}`),make('span','pet-arrow','↗'));
       add(card,picture,make('h3','',name(pet)),make('span','pet-breed',`${pet.breed} · ${pet.country}`),make('span','pet-role',roleNames[pet.role] || pet.role || 'Cricket companion'),make('span',`pet-availability ${pet.native?'available':''}`,pet.native?'Pet + artwork available':pet.portrait?'Character artwork available':'Character profile · portrait in progress'));
       card.addEventListener('click',() => openCharacter(pet)); grid.append(card);
