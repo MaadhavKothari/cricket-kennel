@@ -12,6 +12,8 @@ Film music: Soul Limbo — Booker T. & The MG's. Third-party music is excluded f
 
 - [Wisden Almanack: eyewitness accounts of Lara's 375 and 501*](https://www.wisden.com/wisden-cricketers-almanack/brian-lara-501-375-tribute)
 - [Wisden Almanack: Tony Cozier on Lara's 400](https://www.wisden.com/wisden-cricketers-almanack/composed-calculated-invincible-tony-cozier-on-brian-laras-400)
+- [England and Wales Cricket Board: Dickie Bird tribute](https://www.ecb.co.uk/news/4368057/ecb-pays-tribute-to-dickie-bird-obe)
+- [Cricket West Indies: Rahkeem Cornwall](https://www.windiescricket.com/players/rahkeem-cornwall-2598/)
 - [Wisden Cricketers of the Year](https://www.wisden.com/wisden-cricketers-almanack/wisden-cricketers-of-the-year)
 - [Top five: the best of Chris Gayle in ODIs](https://www.icc-cricket.com/news/top-five-the-best-of-chris-gayle-in-odis)
 - [Lord’s: Father Time Wall](https://www.lords.org/lords/our-history/father-time-wall/1864-w-g-grace-plays-at-lord-s-for-the-first-time)

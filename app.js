@@ -10,7 +10,8 @@
   const safe = value => { const url = String(value || '').trim(); if(/^(?:javascript|data|vbscript|file):/i.test(url))return ''; return /^(?:assets|media|downloads)\//.test(url) ? `${url}${url.includes('?')?'&':'?'}v=${revision}` : url; };
   const external = (label,url) => { const a = make('a','',label); a.href = safe(url); a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
   const normalize = value => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const roleNames = {batter:'Batter',bowler:'Bowler',keeper:'Wicketkeeper',allrounder:'All-rounder',commentator:'Commentator'};
+  const roleNames = {batter:'Batter',bowler:'Bowler',keeper:'Wicketkeeper',allrounder:'All-rounder',commentator:'Commentator',umpire:'Umpire',guest:'12th man'};
+  const countryLabel = pet => pet.country || (pet.role === 'guest' ? 'The Pavilion' : 'Cricket Kennel');
   const name = pet => pet.name || pet.display_name || pet.id;
   const profileKey = profile => profile.id || `${profile.dog_id}-${profile.format}`;
   const globalProfiles = Array.isArray(data.format_profiles) ? data.format_profiles : (data.format_profiles?.profiles || []);
@@ -55,15 +56,15 @@
         }
       }
       add(picture,img,make('span','pet-number',`CK / ${String(pets.indexOf(pet) + 1).padStart(2,'0')}`),make('span','pet-arrow','↗'));
-      add(card,picture,make('h3','',name(pet)),make('span','pet-breed',`${pet.breed} · ${pet.country}`),make('span','pet-role',roleNames[pet.role] || pet.role || 'Cricket companion'),make('span',`pet-availability ${pet.native?'available':''}`,pet.native?(pet.portrait?'Pet + artwork available':'Animated pet available'):pet.portrait?'Character artwork available':'Character profile · portrait in progress'));
+      add(card,picture,make('h3','',name(pet)),make('span','pet-breed',`${pet.breed} · ${countryLabel(pet)}`),make('span','pet-role',roleNames[pet.role] || pet.role || 'Cricket companion'),make('span',`pet-availability ${pet.native?'available':''}`,pet.native?(pet.portrait?'Pet + artwork available':'Animated pet available'):pet.portrait?'Character artwork available':'Character profile · portrait in progress'));
       card.addEventListener('click',() => openCharacter(pet)); grid.append(card);
     }
   }
 
   function openCharacter(pet) {
     state.selected = pet.id;
-    $('#character-name').textContent = name(pet); $('#character-country').textContent = `${pet.country} · ${roleNames[pet.role] || pet.role || 'Cricketer'}`;
-    $('#character-breed').textContent = `${pet.breed}${pet.player ? ` · Cricket inspiration: ${pet.player}` : ''}`;
+    $('#character-name').textContent = name(pet); $('#character-country').textContent = `${countryLabel(pet)} · ${roleNames[pet.role] || pet.role || 'Cricketer'}`;
+    $('#character-breed').textContent = `${pet.breed}${pet.inspiration_label ? ` · ${pet.inspiration_label}` : pet.player ? ` · Cricket inspiration: ${pet.player}` : ''}`;
     $('#character-signature').textContent = pet.signature || '';
     $('#character-tags').replaceChildren(...(pet.tags || []).map(tag => make('span','',tag)));
     const fact = $('#character-fact'),history=(pet.facts?.length?pet.facts:[pet.fact]).filter(f=>f?.fact);let factIndex=Math.floor(Date.now()/86400000)%Math.max(history.length,1);
