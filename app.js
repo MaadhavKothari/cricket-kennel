@@ -55,7 +55,7 @@
         }
       }
       add(picture,img,make('span','pet-number',`CK / ${String(pets.indexOf(pet) + 1).padStart(2,'0')}`),make('span','pet-arrow','↗'));
-      add(card,picture,make('h3','',name(pet)),make('span','pet-breed',`${pet.breed} · ${pet.country}`),make('span','pet-role',roleNames[pet.role] || pet.role || 'Cricket companion'),make('span',`pet-availability ${pet.native?'available':''}`,pet.native?'Pet + artwork available':pet.portrait?'Character artwork available':'Character profile · portrait in progress'));
+      add(card,picture,make('h3','',name(pet)),make('span','pet-breed',`${pet.breed} · ${pet.country}`),make('span','pet-role',roleNames[pet.role] || pet.role || 'Cricket companion'),make('span',`pet-availability ${pet.native?'available':''}`,pet.native?(pet.portrait?'Pet + artwork available':'Animated pet available'):pet.portrait?'Character artwork available':'Character profile · portrait in progress'));
       card.addEventListener('click',() => openCharacter(pet)); grid.append(card);
     }
   }

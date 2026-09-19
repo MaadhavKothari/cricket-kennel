@@ -8,6 +8,8 @@ Original fictional dog characters and AI-assisted artwork developed with Codex a
 
 The public release contains illustrations, shareable media and individually reviewed native packages where a download is shown. Other native animation work continues. Format action sequences remain art studies unless explicitly rendered.
 
+Film music: Soul Limbo — Booker T. & The MG's. Third-party music is excluded from the project's CC BY-NC artwork licence.
+
 - [Wisden Almanack: eyewitness accounts of Lara's 375 and 501*](https://www.wisden.com/wisden-cricketers-almanack/brian-lara-501-375-tribute)
 - [Wisden Almanack: Tony Cozier on Lara's 400](https://www.wisden.com/wisden-cricketers-almanack/composed-calculated-invincible-tony-cozier-on-brian-laras-400)
 - [Wisden Cricketers of the Year](https://www.wisden.com/wisden-cricketers-almanack/wisden-cricketers-of-the-year)
@@ -137,7 +139,5 @@ The public release contains illustrations, shareable media and individually revi
 - [Mithali Raj announces retirement](https://www.icc-cricket.com/news/india-legend-mithali-raj-announces-retirement)
 - [Mithali Raj player profile](https://www.icc-cricket.com/rankings/7320/mithali-raj)
 - [Jhulan Goswami player profile](https://www.cricket.com.au/players/CA%3A923/jhulan-goswami)
-
-Film music: **Soul Limbo — Booker T. & The MG's**. The recording is third-party material and is excluded from the project's CC BY-NC artwork licence.
 
 Platform setup and availability: [OpenAI pet guide](https://learn.chatgpt.com/docs/pets). Cricket Kennel is an independent companion collection.
