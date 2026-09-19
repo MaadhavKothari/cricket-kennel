@@ -9,3 +9,5 @@ The original Cricket Kennel character artwork, pet sprite artwork, sticker and G
 You may share and adapt the licensed material for noncommercial purposes, with appropriate attribution, a licence link and an indication of changes. See the full terms above.
 
 Linked third-party articles, reference photographs, third-party music, brands and publicity rights are not licensed by this notice. No athlete, broadcaster or cricket-body endorsement is implied. Website software is not covered by this artwork licence.
+
+The promotional films feature **Soul Limbo — Booker T. & The MG's**. This recording is excluded from the CC BY-NC 4.0 licence for the original project material.

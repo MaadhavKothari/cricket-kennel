@@ -137,3 +137,5 @@ The public release contains illustrations, shareable media and individually revi
 - [Mithali Raj announces retirement](https://www.icc-cricket.com/news/india-legend-mithali-raj-announces-retirement)
 - [Mithali Raj player profile](https://www.icc-cricket.com/rankings/7320/mithali-raj)
 - [Jhulan Goswami player profile](https://www.cricket.com.au/players/CA%3A923/jhulan-goswami)
+
+Film music: **Soul Limbo — Booker T. & The MG's**. The recording is third-party material and is excluded from the project's CC BY-NC artwork licence.
