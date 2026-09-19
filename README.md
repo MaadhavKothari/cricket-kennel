@@ -2,7 +2,7 @@
 
 AI companions and animated cricket pets for ChatGPT desktop and Codex. Choose your teammate.
 
-101 original character profiles, 99 illustrated portraits and 36 reviewed desktop pet downloads. Play the interactive pet demo beside the Soul Limbo promo, then download your teammate. The collection includes sourced cricket tributes, ODI/T20 art studies, six animated shorts, stickers and a 20-second film. Availability is shown on each character card.
+101 original character profiles, 99 illustrated portraits and 41 reviewed desktop pet downloads. Play the interactive pet demo beside the Soul Limbo promo, then download your teammate. The collection includes sourced cricket tributes, ODI/T20 art studies, six animated shorts, stickers and a 20-second film. Availability is shown on each character card.
 
 [Try the pet demo](https://maadhavkothari.github.io/cricket-kennel/#pet-store) · [Press kit](https://maadhavkothari.github.io/cricket-kennel/press.html) · [Credits](CREDITS.md)
 
