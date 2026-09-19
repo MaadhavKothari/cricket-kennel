@@ -110,6 +110,7 @@
     $('#gif-image').hidden = true; $('#gif-image').removeAttribute('src'); $('#gif-toggle').textContent = reduced ? 'Play loop preview (motion)' : 'Play loop preview';
     const src = safe(downloads[mode]); $('#media-unavailable').hidden = Boolean(src); video.hidden = mode === 'gif' || !src; $('#gif-preview').hidden = mode !== 'gif' || !src;
     $('#film-player').classList.toggle('is-vertical',mode === 'vertical');
+    video.poster = safe(`assets/film-${mode === 'vertical' ? 'vertical' : 'horizontal'}.png`);
     document.querySelectorAll('.media-switch').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.media === mode)));
     if (src && mode !== 'gif') { video.src = src; video.preload = 'metadata'; video.load(); }
     $('#media-note').textContent = mode === 'gif' ? 'The loop loads only when you choose to play it. You can stop it at any time.' : 'Press play for batting, bowling, keeping and a proper tea break.';
@@ -117,7 +118,6 @@
   }
 
   function setupMedia() {
-    const poster = pets.find(pet => pet.id === 'brian') || pets[0]; if (poster?.portrait) $('#film-video').poster = safe(poster.portrait);
     for (const button of document.querySelectorAll('.media-switch')) { button.hidden = !downloads[button.dataset.media]; button.addEventListener('click',() => setMedia(button.dataset.media)); }
     $('#gif-toggle').addEventListener('click',() => { state.gifPlaying = !state.gifPlaying; $('#gif-image').hidden = !state.gifPlaying; if (state.gifPlaying) $('#gif-image').src = safe(downloads.gif); else $('#gif-image').removeAttribute('src'); $('#gif-toggle').textContent = state.gifPlaying ? 'Stop loop preview' : reduced ? 'Play loop preview (motion)' : 'Play loop preview'; });
     $('#film-video').addEventListener('error',() => { $('#media-note').textContent = 'The film could not be loaded. Try the download link or choose another format.'; });
@@ -147,17 +147,27 @@
     {title:'Work at the crease',row:7,count:6,times:[120,120,120,120,120,220]},
     {title:'Review',row:8,count:6,times:[150,150,150,150,150,280]}
   ];
-  let nativeImage=null,nativeFrame=0,nativeTimer=null,nativePlaying=false,nativeLoad=0;
+  let nativeImage=null,nativeFrame=0,nativeTimer=null,nativePlaying=false,nativeLoad=0,nativeDemoTimer=null,nativeDemoPlaying=false;
+  const demoSteps=[{row:0,label:'At ease',duration:2000},{row:7,label:'Working on a task',duration:3000},{row:6,label:'Needs your input',duration:3000},{row:8,label:'Reviewing the work',duration:3000},{row:4,label:'Ready to celebrate',duration:2000},{row:5,label:'Regroup after a setback',duration:2000}];
   const nativeRow=()=>nativeRows[Number($('#native-action').value)||0];
-  function pauseNative(){clearTimeout(nativeTimer);nativePlaying=false;$('#native-play').textContent='Play animation';$('#native-play').setAttribute('aria-pressed','false');}
+  function pauseNative(){clearTimeout(nativeTimer);clearTimeout(nativeDemoTimer);if(nativeDemoPlaying)$('#native-demo-status').textContent='Demo paused. Choose any animation to explore.';nativePlaying=false;nativeDemoPlaying=false;$('#native-play').textContent='Play animation';$('#native-play').setAttribute('aria-pressed','false');$('#native-demo').textContent='Play pet demo';$('#native-demo').setAttribute('aria-pressed','false');}
+  function demoStep(index){
+    if(!nativeDemoPlaying||!nativeImage)return;
+    clearTimeout(nativeTimer);
+    if(index>=demoSteps.length){pauseNative();$('#native-demo-status').textContent='Demo complete. Choose any animation to explore.';return;}
+    const step=demoSteps[index];$('#native-action').value=String(step.row);nativeFrame=0;nativePlaying=true;
+    $('#native-demo-status').textContent=`${index+1} of ${demoSteps.length} · ${step.label}`;
+    $('#native-play').textContent='Pause animation';$('#native-play').setAttribute('aria-pressed','true');tickNative();
+    nativeDemoTimer=setTimeout(()=>demoStep(index+1),step.duration);
+  }
   function drawNative(){if(!nativeImage)return;const row=nativeRow(),ctx=$('#native-canvas').getContext('2d');ctx.clearRect(0,0,192,208);ctx.drawImage(nativeImage,nativeFrame*192,row.row*208,192,208,0,0,192,208);$('#native-frame').textContent=`${nativeFrame+1} / ${row.count}`;}
   function tickNative(){drawNative();if(nativePlaying)nativeTimer=setTimeout(()=>{nativeFrame=(nativeFrame+1)%nativeRow().count;tickNative();},nativeRow().times[nativeFrame]);}
   function loadNative(){
     pauseNative(); const token=++nativeLoad,pet=pets.find(p=>p.id===$('#native-pet').value);if(!pet?.native)return;
-    nativeImage=null;nativeFrame=0;$('#native-canvas').hidden=true;$('#native-message').hidden=false;$('#native-message').textContent='Bringing your teammate onto the field…';$('#native-play').disabled=true;$('#native-step').disabled=true;
+    nativeImage=null;nativeFrame=0;$('#native-canvas').hidden=true;$('#native-message').hidden=false;$('#native-message').textContent='Bringing your teammate onto the field…';$('#native-play').disabled=true;$('#native-step').disabled=true;$('#native-demo').disabled=true;$('#native-demo-status').textContent='Try the pet’s activity animations in this browser preview.';
     const link=$('#native-download');link.href=safe(pet.native.download);link.download=pet.native.download.split('/').pop();link.textContent=`Download ${name(pet)} ↓`;
-    $('#native-size').textContent=`Free · ${(pet.native.bytes/1024/1024).toFixed(1)} MB ZIP · Desktop / Codex CLI`;
-    const img=new Image();img.onload=()=>{if(token!==nativeLoad)return;if(img.naturalWidth!==1536||img.naturalHeight!==2288){$('#native-message').textContent='This preview could not be opened.';return;}nativeImage=img;$('#native-canvas').hidden=false;$('#native-canvas').setAttribute('aria-label',`${name(pet)} animated pet preview`);$('#native-message').hidden=true;$('#native-play').disabled=false;$('#native-step').disabled=false;drawNative();};
+    $('#native-size').textContent=`Free · ${(pet.native.bytes/1024/1024).toFixed(1)} MB ZIP · ChatGPT desktop + Codex CLI`;
+    const img=new Image();img.onload=()=>{if(token!==nativeLoad)return;if(img.naturalWidth!==1536||img.naturalHeight!==2288){$('#native-message').textContent='This preview could not be opened.';return;}nativeImage=img;$('#native-canvas').hidden=false;$('#native-canvas').setAttribute('aria-label',`${name(pet)} animated pet preview`);$('#native-message').hidden=true;$('#native-play').disabled=false;$('#native-step').disabled=false;$('#native-demo').disabled=false;drawNative();};
     img.onerror=()=>{if(token===nativeLoad)$('#native-message').textContent='Preview could not load. Please try another pet or reload.';};img.src=safe(pet.native.src);
   }
   function setupNative(){
@@ -168,6 +178,7 @@
     $('#native-action').addEventListener('change',()=>{pauseNative();nativeFrame=0;drawNative();});
     $('#native-play').addEventListener('click',()=>{if(nativePlaying){pauseNative();return;}if(!nativeImage)return;nativePlaying=true;$('#native-play').textContent='Pause animation';$('#native-play').setAttribute('aria-pressed','true');tickNative();});
     $('#native-step').addEventListener('click',()=>{pauseNative();nativeFrame=(nativeFrame+1)%nativeRow().count;drawNative();});
+    $('#native-demo').addEventListener('click',()=>{if(nativeDemoPlaying){pauseNative();$('#native-demo-status').textContent='Demo paused. Choose any animation to explore.';return;}if(!nativeImage)return;pauseNative();nativeDemoPlaying=true;$('#native-demo').textContent='Pause pet demo';$('#native-demo').setAttribute('aria-pressed','true');demoStep(0);});
     document.querySelectorAll('.preview-backgrounds button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.preview-backgrounds button').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));$('#native-stage').dataset.background=button.dataset.background;}));
     document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseNative();});
     if(available.length)loadNative();else{$('#native-message').textContent='The first reviewed animated pets will appear here.';$('#native-download').hidden=true;}

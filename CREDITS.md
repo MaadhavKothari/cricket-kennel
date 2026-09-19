@@ -139,3 +139,5 @@ The public release contains illustrations, shareable media and individually revi
 - [Jhulan Goswami player profile](https://www.cricket.com.au/players/CA%3A923/jhulan-goswami)
 
 Film music: **Soul Limbo — Booker T. & The MG's**. The recording is third-party material and is excluded from the project's CC BY-NC artwork licence.
+
+Platform setup and availability: [OpenAI pet guide](https://learn.chatgpt.com/docs/pets). Cricket Kennel is an independent companion collection.
