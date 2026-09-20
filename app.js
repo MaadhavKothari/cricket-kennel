@@ -80,7 +80,7 @@
     $('#character-format-link').onclick = () => { if (available[0]) { $('#format-select').value = profileKey(available[0]); renderFormat(); } $('#character-dialog').close(); };
     $('#character-download-link').onclick = () => $('#character-dialog').close();
     $('#character-art-download').hidden=!pet.portrait;$('#character-art-download').href=safe(pet.portrait); $('#character-art-download').download=pet.id+'.webp';
-    $('#character-availability').textContent=pet.native?`Animated pet available · ${pet.native.label || 'Test whites'}`:pet.portrait?'Character artwork available. A downloadable pet animation is not available yet.':'Character profile available. Portrait and pet animation are not available yet.';
+    $('#character-availability').textContent=pet.native?`Animated pet available · ${nativeVariants(pet).map(edition=>nativeKitLabel(pet,edition)).join(' · ')}`:pet.portrait?'Character artwork available. A downloadable pet animation is not available yet.':'Character profile available. Portrait and pet animation are not available yet.';
     $('#character-pet-link').hidden=!pet.native;
     $('#character-pet-link').onclick=()=>{ $('#native-pet').value=pet.id; loadNative(); $('#character-dialog').close(); };
     $('#character-dialog').showModal();
@@ -155,8 +155,14 @@
     {title:'Review',row:8,count:6,times:[150,150,150,150,150,280]}
   ];
   let nativeImage=null,nativeFrame=0,nativeTimer=null,nativePlaying=false,nativeLoad=0,nativeDemoTimer=null,nativeDemoPlaying=false;
+  const nativeKitLabel=(pet,edition)=>edition.label || (edition.kit==='odi'?'ODI kit':edition.kit==='t20'?'T20 kit':pet.role==='umpire'?'Umpire whites':'Test whites');
+  function nativeVariants(pet){
+    if(!pet?.native)return [];
+    const editions=[pet.native,...(Array.isArray(pet.native_variants)?pet.native_variants:[])],seen=new Set();
+    return editions.filter(edition=>{const kit=edition.kit||'test';if(!['test','odi','t20'].includes(kit)||seen.has(kit))return false;seen.add(kit);return true;}).sort((a,b)=>['test','odi','t20'].indexOf(a.kit||'test')-['test','odi','t20'].indexOf(b.kit||'test'));
+  }
   const demoSteps=[{row:0,label:'At ease',duration:2000},{row:7,label:'Working on a task',duration:3000},{row:6,label:'Needs your input',duration:3000},{row:8,label:'Reviewing the work',duration:3000},{row:4,label:'Ready to celebrate',duration:2000},{row:5,label:'Regroup after a setback',duration:2000}];
-  const nativeRow=()=>nativeRows[Number($('#native-action').value)||0];
+  const nativeRow=()=>nativeRows[Number($('#native-action').value)]||nativeRows[0];
   function pauseNative(){clearTimeout(nativeTimer);clearTimeout(nativeDemoTimer);if(nativeDemoPlaying)$('#native-demo-status').textContent='Demo paused. Choose any animation to explore.';nativePlaying=false;nativeDemoPlaying=false;$('#native-play').textContent='Play animation';$('#native-play').setAttribute('aria-pressed','false');$('#native-demo').textContent='Play pet demo';$('#native-demo').setAttribute('aria-pressed','false');}
   function demoStep(index){
     if(!nativeDemoPlaying||!nativeImage)return;
@@ -169,26 +175,36 @@
   }
   function drawNative(){if(!nativeImage)return;const row=nativeRow(),ctx=$('#native-canvas').getContext('2d');ctx.clearRect(0,0,192,208);ctx.drawImage(nativeImage,nativeFrame*192,row.row*208,192,208,0,0,192,208);$('#native-frame').textContent=`${nativeFrame+1} / ${row.count}`;}
   function tickNative(){drawNative();if(nativePlaying)nativeTimer=setTimeout(()=>{nativeFrame=(nativeFrame+1)%nativeRow().count;tickNative();},nativeRow().times[nativeFrame]);}
-  function loadNative(){
-    pauseNative(); const token=++nativeLoad,pet=pets.find(p=>p.id===$('#native-pet').value);if(!pet?.native)return;
-    nativeImage=null;nativeFrame=0;$('#native-canvas').hidden=true;$('#native-message').hidden=false;$('#native-message').textContent='Bringing your teammate onto the field…';$('#native-play').disabled=true;$('#native-step').disabled=true;$('#native-demo').disabled=true;$('#native-demo-status').textContent='Try the pet’s activity animations in this browser preview.';
-    const link=$('#native-download');link.href=safe(pet.native.download);link.download=pet.native.download.split('/').pop();link.textContent=`Download ${name(pet)} ↓`;
-    $('#native-size').textContent=`Free · ${(pet.native.bytes/1024/1024).toFixed(1)} MB ZIP · ChatGPT desktop + Codex CLI`;
-    const img=new Image();img.onload=()=>{if(token!==nativeLoad)return;if(img.naturalWidth!==1536||img.naturalHeight!==2288){$('#native-message').textContent='This preview could not be opened.';return;}nativeImage=img;$('#native-canvas').hidden=false;$('#native-canvas').setAttribute('aria-label',`${name(pet)} animated pet preview`);$('#native-message').hidden=true;$('#native-play').disabled=false;$('#native-step').disabled=false;$('#native-demo').disabled=false;drawNative();};
-    img.onerror=()=>{if(token===nativeLoad)$('#native-message').textContent='Preview could not load. Please try another pet or reload.';};img.src=safe(pet.native.src);
+  function loadNative({keepKit=false}={}){
+    pauseNative();const token=++nativeLoad,pet=pets.find(p=>p.id===$('#native-pet').value),editions=nativeVariants(pet);
+    nativeImage=null;nativeFrame=0;const canvas=$('#native-canvas');canvas.getContext('2d').clearRect(0,0,192,208);canvas.hidden=true;
+    $('#native-frame').textContent='';$('#native-message').hidden=false;$('#native-message').textContent='Bringing your teammate onto the field…';$('#native-play').disabled=true;$('#native-step').disabled=true;$('#native-demo').disabled=true;$('#native-demo-status').textContent='Try the pet’s activity animations in this browser preview.';
+    const select=$('#native-kit'),previous=keepKit?select.value:(pet?.native?.kit||'test');select.replaceChildren();
+    for(const edition of editions){const opt=make('option','',nativeKitLabel(pet,edition));opt.value=edition.kit||'test';select.append(opt);}
+    select.disabled=editions.length<2;select.value=editions.some(edition=>(edition.kit||'test')===previous)?previous:(editions[0]?.kit||'test');
+    const edition=editions.find(item=>(item.kit||'test')===select.value),link=$('#native-download');
+    link.hidden=!edition;link.removeAttribute('href');$('#native-size').textContent='';$('#native-kit-label').textContent='';
+    if(!edition){$('#native-message').textContent='The first reviewed animated pets will appear here.';return;}
+    if(!nativeRows[Number($('#native-action').value)])$('#native-action').value='0';
+    const label=nativeKitLabel(pet,edition);$('#native-kit-label').textContent=label;canvas.setAttribute('aria-label',`${name(pet)} · ${label} animated pet preview`);
+    link.href=safe(edition.download);link.download=edition.download.split('/').pop();link.textContent=`Download ${name(pet)} · ${label} ↓`;
+    $('#native-size').textContent=`Free · ${(edition.bytes/1024/1024).toFixed(1)} MB ZIP · ChatGPT desktop + Codex CLI`;
+    const img=new Image();img.onload=()=>{if(token!==nativeLoad)return;if(img.naturalWidth!==1536||img.naturalHeight!==2288){$('#native-message').textContent='This preview could not be opened.';return;}nativeImage=img;canvas.hidden=false;$('#native-message').hidden=true;$('#native-play').disabled=false;$('#native-step').disabled=false;$('#native-demo').disabled=false;drawNative();};
+    img.onerror=()=>{if(token===nativeLoad)$('#native-message').textContent='Preview could not load. Please try another kit or reload.';};img.src=safe(edition.src);
   }
   function setupNative(){
     const available=pets.filter(p=>p.native);$('#native-count').textContent=available.length;
-    for(const pet of available){const opt=make('option','',`${name(pet)} · ${pet.country}`);opt.value=pet.id;$('#native-pet').append(opt);}
+    for(const pet of available){const opt=make('option','',`${name(pet)} · ${countryLabel(pet)}`);opt.value=pet.id;$('#native-pet').append(opt);}
     nativeRows.forEach((row,index)=>{const opt=make('option','',row.title);opt.value=index;$('#native-action').append(opt);});
     $('#native-pet').addEventListener('change',loadNative);
+    $('#native-kit').addEventListener('change',()=>loadNative({keepKit:true}));
     $('#native-action').addEventListener('change',()=>{pauseNative();nativeFrame=0;drawNative();});
     $('#native-play').addEventListener('click',()=>{if(nativePlaying){pauseNative();return;}if(!nativeImage)return;nativePlaying=true;$('#native-play').textContent='Pause animation';$('#native-play').setAttribute('aria-pressed','true');tickNative();});
     $('#native-step').addEventListener('click',()=>{pauseNative();nativeFrame=(nativeFrame+1)%nativeRow().count;drawNative();});
     $('#native-demo').addEventListener('click',()=>{if(nativeDemoPlaying){pauseNative();$('#native-demo-status').textContent='Demo paused. Choose any animation to explore.';return;}if(!nativeImage)return;pauseNative();nativeDemoPlaying=true;$('#native-demo').textContent='Pause pet demo';$('#native-demo').setAttribute('aria-pressed','true');demoStep(0);});
     document.querySelectorAll('.preview-backgrounds button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.preview-backgrounds button').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));$('#native-stage').dataset.background=button.dataset.background;}));
     document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseNative();});
-    if(available.length)loadNative();else{$('#native-message').textContent='The first reviewed animated pets will appear here.';$('#native-download').hidden=true;}
+    loadNative();
   }
   function setupShareGifs(){
     const entries=data.share_gifs||[]; if(!entries.length){$('#share-gifs').hidden=true;return;}
