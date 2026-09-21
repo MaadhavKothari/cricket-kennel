@@ -6,8 +6,8 @@
   const $ = selector => document.querySelector(selector);
   const make = (tag,className,text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined && text !== null) node.textContent = text; return node; };
   const add = (node,...children) => { children.flat().filter(Boolean).forEach(child => node.append(child)); return node; };
-  const revision = encodeURIComponent(data.updated_at || '20260918-motion2');
-  const safe = value => { const url = String(value || '').trim(); if(/^(?:javascript|data|vbscript|file):/i.test(url))return ''; return /^(?:assets|media|downloads)\//.test(url) ? `${url}${url.includes('?')?'&':'?'}v=${revision}` : url; };
+  const revision = data.updated_at || '20260918-motion2';
+  const safe = (value,version=revision) => { const url = String(value || '').trim(); if(/^(?:javascript|data|vbscript|file):/i.test(url))return ''; return /^(?:assets|media|downloads)\//.test(url) ? `${url}${url.includes('?')?'&':'?'}v=${encodeURIComponent(version||revision)}` : url; };
   const external = (label,url) => { const a = make('a','',label); a.href = safe(url); a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
   const normalize = value => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const roleNames = {batter:'Batter',bowler:'Bowler',keeper:'Wicketkeeper',allrounder:'All-rounder',commentator:'Commentator',umpire:'Umpire',guest:'12th man'};
@@ -187,10 +187,10 @@
     if(!edition){$('#native-message').textContent='The first reviewed animated pets will appear here.';return;}
     if(!nativeRows[Number($('#native-action').value)])$('#native-action').value='0';
     const label=nativeKitLabel(pet,edition);$('#native-kit-label').textContent=label;canvas.setAttribute('aria-label',`${name(pet)} · ${label} animated pet preview`);
-    link.href=safe(edition.download);link.download=edition.download.split('/').pop();link.textContent=`Download ${name(pet)} · ${label} ↓`;
+    link.href=safe(edition.download,edition.sha256);link.download=edition.download.split('/').pop();link.textContent=`Download ${name(pet)} · ${label} ↓`;
     $('#native-size').textContent=`Free · ${(edition.bytes/1024/1024).toFixed(1)} MB ZIP · ChatGPT desktop + Codex CLI`;
     const img=new Image();img.onload=()=>{if(token!==nativeLoad)return;if(img.naturalWidth!==1536||img.naturalHeight!==2288){$('#native-message').textContent='This preview could not be opened.';return;}nativeImage=img;canvas.hidden=false;$('#native-message').hidden=true;$('#native-play').disabled=false;$('#native-step').disabled=false;$('#native-demo').disabled=false;drawNative();};
-    img.onerror=()=>{if(token===nativeLoad)$('#native-message').textContent='Preview could not load. Please try another kit or reload.';};img.src=safe(edition.src);
+    img.onerror=()=>{if(token===nativeLoad)$('#native-message').textContent='Preview could not load. Please try another kit or reload.';};img.src=safe(edition.src,edition.sprite_sha256);
   }
   function setupNative(){
     const available=pets.filter(p=>p.native);$('#native-count').textContent=available.length;
